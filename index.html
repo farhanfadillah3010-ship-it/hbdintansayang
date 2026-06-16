@@ -932,41 +932,74 @@ setInterval(updateDurationTimer, 1000);
 
 /* FINAL CELEBRATION */
 function triggerFinalCelebration() {
-activeCanvasMode = "celebrate";
-particles = [];
-cancelAnimationFrame(animationFrameId);
-loopParticles();
-const palette = ['#f2a3c7', '#ffd5e8', '#fff0f6', '#8d3d68', '#fff0f6', '#e0b0ff'];
-for (let burst = 0; burst < 5; burst++) {
-setTimeout(() => {
-const rx = Math.random() * canvas.width;
-const ry = Math.random() * canvas.height * 0.7 + 100;
-for (let i = 0; i < 65; i++) {
-particles.push(new CelebrationParticle(rx, ry, palette[Math.floor(Math.random() * palette.length)]));
-}
-}, burst * 450);
-}
-setTimeout(() => {
-showGlobalPopup("🎉", "Happy Birthday Intan ❤️\n\nThank you for being part of my life.");
-}, 1000);
+  activeCanvasMode = "celebrate";
+  particles = [];
+  cancelAnimationFrame(animationFrameId);
+  loopParticles();
+
+  // --- MULAI EFEK KUE ULANG TAHUN MELAYANG ---
+  for (let c = 0; c < 15; c++) {
+    setTimeout(() => {
+      const cake = document.createElement('div');
+      cake.innerText = '🎂';
+      cake.style.position = 'fixed';
+      cake.style.left = Math.random() * 100 + 'vw';
+      cake.style.bottom = '-60px'; // Mulai dari luar bawah layar
+      cake.style.fontSize = (Math.random() * 2 + 1.5) + 'rem'; // Ukuran random
+      cake.style.zIndex = '9500';
+      cake.style.pointerEvents = 'none';
+      cake.style.transition = 'transform 3s linear, bottom 3s ease-in';
+      cake.style.filter = 'drop-shadow(0 4px 10px rgba(0,0,0,0.3))';
+      document.body.appendChild(cake);
+
+      // Trigger animasi terbang ke atas
+      setTimeout(() => {
+        cake.style.bottom = '120vh'; // Melewati batas atas layar
+        cake.style.transform = `rotate(${(Math.random() - 0.5) * 100}deg)`; // Efek berputar sedikit
+      }, 50);
+
+      // Bersihkan elemen kue setelah animasi selesai agar website tidak lag
+      setTimeout(() => {
+        cake.remove();
+      }, 3100);
+    }, c * 200); // Delay agar kue muncul bergantian
+  }
+  // --- AKHIR EFEK KUE ULANG TAHUN ---
+
+  // Efek Partikel / Kembang Api Asli
+  const palette = ['#f2a3c7', '#ffd5e8', '#fff0f6', '#8d3d68', '#fff0f6', '#e0b0ff'];
+  for (let burst = 0; burst < 5; burst++) {
+    setTimeout(() => {
+      const rx = Math.random() * canvas.width;
+      const ry = Math.random() * canvas.height * 0.7 + 100;
+      for (let i = 0; i < 65; i++) {
+        particles.push(new CelebrationParticle(rx, ry, palette[Math.floor(Math.random() * palette.length)]));
+      }
+    }, burst * 450);
+  }
+  
+  // Mengubah icon popup menjadi kue ulang tahun
+  setTimeout(() => {
+    showGlobalPopup("🎂", "Happy Birthday Intan ❤️\n\nThank you for being part of my life.");
+  }, 1500);
 }
 
 function initScrollFadeWatcher() {
-const elements = document.querySelectorAll('.class-fader');
-const observer = new IntersectionObserver((entries) => {
-entries.forEach(entry => {
-if (entry.isIntersecting) { entry.target.classList.add('visible'); }
-});
-}, { threshold: 0.1 });
-elements.forEach(el => {
-el.classList.add('fade-up-element');
-observer.observe(el);
-});
+  const elements = document.querySelectorAll('.class-fader');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+  elements.forEach(el => {
+    el.classList.add('fade-up-element');
+    observer.observe(el);
+  });
 }
 
 const mouseGlow = document.getElementById('mouse-glow');
 window.addEventListener('mousemove', (e) => {
-mouseGlow.style.left = e.clientX + 'px'; mouseGlow.style.top = e.clientY + 'px';
+  mouseGlow.style.left = e.clientX + 'px'; mouseGlow.style.top = e.clientY + 'px';
 });
 
 initAudioPlaylist();
